@@ -25,10 +25,10 @@ window.addEventListener("scroll", () => {
 // ================= TYPING EFFECT =================
 
 const text = [
-    "Unity 2D Game Developer",
-    "Unity 3D Game Developer",
+    "Unity Game Developer",
     "Gameplay Programmer",
-    "Mobile Game Developer"
+    "Mobile Game Developer",
+    "Software Developer"
 ];
 
 let count = 0;
@@ -117,7 +117,7 @@ const counterObserver = new IntersectionObserver((entries) => {
             started = true;
 
             let current = 0;
-            const target = 5;
+            const target = 6;
 
             const timer = setInterval(() => {
 
