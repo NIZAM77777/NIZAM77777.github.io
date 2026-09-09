@@ -26,9 +26,10 @@ window.addEventListener("scroll", () => {
 
 const text = [
     "Unity Game Developer",
+    "Freelance Developer",
+    "Software Developer",
     "Gameplay Programmer",
-    "Mobile Game Developer",
-    "Software Developer"
+    "Mobile Game Developer"
 ];
 
 let count = 0;
