@@ -542,3 +542,55 @@ footer img {
         grid-template-columns: 1fr;
     }
 }
+
+
+/* Hero development highlights */
+.hero-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+.hero-stats div {
+    min-width: 135px;
+    padding: 13px 16px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: rgba(255,255,255,.025);
+}
+
+.hero-stats strong,
+.hero-stats span {
+    display: block;
+}
+
+.hero-stats strong {
+    color: var(--accent);
+    font-size: 17px;
+    line-height: 1.25;
+}
+
+.hero-stats span {
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 3px;
+}
+
+@media (max-width: 1000px) {
+    .hero-stats {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-stats {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .hero-stats div {
+        width: 100%;
+    }
+}
