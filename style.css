@@ -441,3 +441,32 @@ footer img {
         justify-content: center;
     }
 }
+
+
+/* Featured project proportions */
+.featured-project {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
+}
+
+.featured-image {
+    min-height: 360px;
+    max-height: 400px;
+}
+
+.featured-image img {
+    object-position: center;
+}
+
+@media (max-width: 1000px) {
+    .featured-image {
+        min-height: 300px;
+        max-height: 360px;
+    }
+}
+
+@media (max-width: 720px) {
+    .featured-image {
+        min-height: 240px;
+        max-height: 300px;
+    }
+}
