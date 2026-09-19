@@ -148,3 +148,49 @@ footer p{color:#7f8792;font-size:13px;margin-top:5px}
  .contact-actions{display:grid}
  .contact-icons a{width:46px;height:46px}
 }
+
+/* Contact phone */
+.contact-phone {
+    margin: 18px 0 8px;
+    display: flex;
+    justify-content: center;
+}
+
+.contact-phone a {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 18px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 12px;
+    color: inherit;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    background: rgba(255, 255, 255, 0.04);
+    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.contact-phone a::before {
+    content: "\260E";
+    font-size: 1.05rem;
+}
+
+.contact-phone a:hover {
+    transform: translateY(-2px);
+    border-color: currentColor;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+@media (max-width: 600px) {
+    .contact-phone {
+        margin-top: 16px;
+    }
+
+    .contact-phone a {
+        width: min(100%, 260px);
+        justify-content: center;
+    }
+}
+
