@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ninja Fight | MN7 Studios</title>
+    <meta name="description" content="Ninja Fight is a 2D action-combat game in development by MN7 Studios, featuring a masked ninja, weapon concepts and stylized platform environments.">
+    <meta name="robots" content="index, follow">
+    <link rel="icon" href="../assets/images/Company Logo.png">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+    <style>
+        .ninja-page{width:min(1100px,92%);margin:auto;padding:116px 0 90px}
+        .ninja-shell{overflow:hidden;background:var(--surface);border:1px solid rgba(255,60,75,.24);border-radius:22px;box-shadow:0 25px 70px rgba(0,0,0,.28)}
+        .ninja-hero{min-height:430px;display:flex;align-items:flex-end;position:relative;background-image:linear-gradient(90deg,rgba(5,8,18,.10),rgba(5,8,18,.08)),url('../assets/images/ninja-fight-banner.jpg');background-size:cover;background-position:center}
+        .ninja-hero:after{content:"";position:absolute;inset:35% 0 0;background:linear-gradient(transparent,rgba(5,7,15,.92))}
+        .ninja-title{position:relative;z-index:1;padding:34px 40px;width:100%}
+        .ninja-title .eyebrow{color:#ff6672}
+        .ninja-title h1{font-size:clamp(42px,7vw,76px);line-height:1;margin:10px 0}
+        .ninja-title p:last-child{letter-spacing:4px;font-weight:600}
+        .ninja-content{padding:38px 42px}
+        .ninja-content h2{font-size:26px;margin:28px 0 10px}
+        .ninja-content p,.ninja-content li{color:var(--muted);line-height:1.85}
+        .ninja-content ul{padding-left:22px}
+        .ninja-meta{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 25px}
+        .ninja-meta span{padding:7px 12px;border:1px solid rgba(255,70,83,.25);background:rgba(255,48,62,.07);border-radius:999px;color:#f1dce0;font-size:12px}
+        .ninja-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+        .ninja-status{display:inline-flex;align-items:center;gap:8px;color:#ffc1c5;font-size:13px;font-weight:600}
+        @media(max-width:650px){.ninja-page{padding-top:100px}.ninja-hero{min-height:310px;background-position:42% center}.ninja-title{padding:25px 22px}.ninja-content{padding:27px 22px}.ninja-title p:last-child{letter-spacing:2px;font-size:12px}.ninja-actions .btn{width:100%}}
+    </style>
+</head>
+<body>
+<header>
+    <nav class="navbar">
+        <a class="logo" href="../index.html#home" aria-label="MN7 Studios home">
+            <img src="../assets/images/Company Logo.png" alt="MN7 Studios">
+        </a>
+        <ul class="nav-links">
+            <li><a href="../index.html#home">Home</a></li>
+            <li><a href="../index.html#projects">Projects</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../index.html#skills">Skills</a></li>
+            <li><a href="../index.html#experience">Experience</a></li>
+            <li><a href="../contact.html">Contact</a></li>
+        </ul>
+        <a class="menu-btn" href="../index.html#projects" aria-label="Back to projects">←</a>
+    </nav>
+</header>
+
+<main class="ninja-page">
+    <article class="ninja-shell">
+        <div class="ninja-hero" role="img" aria-label="Ninja Fight artwork: a masked ninja overlooking a moonlit temple combat world">
+            <div class="ninja-title">
+                <p class="eyebrow">MN7 STUDIOS · GAME DEVELOPMENT PROJECT</p>
+                <h1>NINJA FIGHT</h1>
+                <p>2D ACTION COMBAT GAME</p>
+            </div>
+        </div>
+        <div class="ninja-content">
+            <div class="ninja-status"><i class="fa-solid fa-circle-dot"></i> IN DEVELOPMENT</div>
+            <div class="ninja-meta">
+                <span>2D Action</span><span>Combat</span><span>Ninja</span><span>Platform Environments</span>
+            </div>
+
+            <h2>Project Overview</h2>
+            <p>
+                Ninja Fight is a 2D action-combat game in development. Its visual direction
+                follows a masked ninja hero through a stylized Asian-inspired world of
+                temple rooftops, moonlit mountains, waterfalls and dangerous platform paths.
+                The project is being shaped around fast-paced encounters and a distinctive
+                ninja-fantasy atmosphere.
+            </p>
+
+            <h2>Game Direction</h2>
+            <ul>
+                <li>Ninja character concepts with multiple visual skin variations.</li>
+                <li>Weapon concepts including katana-style swords and ninja equipment.</li>
+                <li>Platform environments with ladders, moving platforms, breakable objects and hazards.</li>
+                <li>Temple structures, bridges, lanterns, banners and atmospheric world props.</li>
+                <li>Action-combat presentation designed for a responsive game experience.</li>
+            </ul>
+
+            <h2>Visual Showcase</h2>
+            <p>
+                The artwork below represents the current visual direction and project presentation.
+                Gameplay systems and final feature implementation are still in development.
+            </p>
+            <div class="ninja-actions">
+                <a class="btn" href="../assets/images/ninja-fight-banner.jpg" target="_blank" rel="noopener noreferrer">View Artwork</a>
+                <a class="btn secondary" href="../index.html#projects">Back to Projects</a>
+            </div>
+        </div>
+    </article>
+</main>
+
+<footer>
+    <img src="../assets/images/mn7-logo.jpg" alt="MN7 Studios logo">
+    <h2>MN7 Studios</h2>
+    <p>Building games and interactive experiences with Unity.</p>
+    <nav aria-label="Footer navigation">
+        <a href="../index.html#projects">Projects</a> ·
+        <a href="../about.html">About</a> ·
+        <a href="../privacy-policy.html">Privacy Policy</a> ·
+        <a href="../terms.html">Terms of Use</a>
+    </nav>
+    <p>© 2026 MN7 Studios. All Rights Reserved.</p>
+</footer>
+</body>
+</html>
