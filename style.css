@@ -728,3 +728,27 @@ footer img {
         min-height: 0;
     }
 }
+
+
+/* Highlight the only two games currently published on Google Play */
+.project-grid-main .project-buttons .playstore-btn {
+    position: relative;
+    background: linear-gradient(135deg, #168b48, #21b85a);
+    border-color: rgba(52, 211, 112, .7);
+    color: #fff;
+    box-shadow: 0 0 0 1px rgba(52, 211, 112, .12), 0 7px 22px rgba(33, 184, 90, .22);
+}
+
+.project-grid-main .project-buttons .playstore-btn::before {
+    content: "\\f3ab";
+    font-family: "Font Awesome 6 Brands";
+    font-weight: 400;
+    margin-right: 8px;
+}
+
+.project-grid-main .project-buttons .playstore-btn:hover {
+    background: linear-gradient(135deg, #20a957, #2bd66b);
+    border-color: #55e58a;
+    box-shadow: 0 10px 28px rgba(33, 184, 90, .34);
+    transform: translateY(-2px);
+}
