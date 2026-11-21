@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mohammed Nizam K N | AI Engineer & Unity Game Developer</title>
+    <meta name="description" content="Portfolio of Mohammed Nizam K N, AI Engineer, Unity Game Developer and Gameplay Programmer specializing in C#, AI systems, mobile games, multiplayer systems and Android development.">
+    <meta name="author" content="Mohammed Nizam K N">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="Mohammed Nizam K N | AI Engineer & Unity Game Developer">
+    <meta property="og:description" content="AI Engineer and Unity Game Developer building intelligent game systems, mobile games and multiplayer experiences.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://nizam77777.github.io/">
+    <meta property="og:image" content="https://nizam77777.github.io/assets/images/mirrorescape-banner.png">
+
+    <link rel="icon" href="assets/images/Company Logo.png">
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+</head>
+
+<body>
+<header>
+    <nav class="navbar">
+        <a class="logo" href="#home" aria-label="MN7 Studios home">
+            <img src="assets/images/Company Logo.png" alt="MN7 Studios">
+        </a>
+
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+
+        <button class="menu-btn" aria-label="Open navigation menu" aria-expanded="false">☰</button>
+    </nav>
+</header>
+
+<main>
+    <!-- HERO -->
+    <section class="hero" id="home">
+        <div class="hero-left">
+            <p class="eyebrow">AI ENGINEER · UNITY GAME DEVELOPER</p>
+            <h1>Mohammed Nizam K N</h1>
+            <h2>AI Engineer · Gameplay Programmer · C# · Multiplayer · PC & Mobile</h2>
+            <p class="hero-description">
+                I build games with Unity and C#, focusing on gameplay systems, AI, multiplayer,
+                UI, reusable architecture and cross-platform development for PC and mobile.
+            </p>
+
+            <div class="hero-buttons">
+                <a href="#projects" class="btn">View Projects</a>
+                <a href="assets/resume/Mohammed_Nizam_K_N.pdf" download class="btn secondary">Download Resume</a>
+            </div>
+
+            <div class="hero-stats" aria-label="Development highlights">
+                <div><strong>7+</strong><span>Games Built</span></div>
+                <div><strong>Unity</strong><span>Game Development</span></div>
+                <div><strong>AI + Multiplayer</strong><span>Game Systems</span></div>
+            </div>
+
+            <div class="hero-links">
+                <a href="https://github.com/NIZAM77777" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a href="https://www.linkedin.com/in/mohammed-nizam-k-n/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="https://play.google.com/store/apps/dev?id=8452972356469482875" target="_blank" rel="noopener noreferrer">Google Play</a>
+            </div>
+        </div>
+
+        <div class="hero-right">
+            <div class="hero-image-wrap">
+                <img src="assets/images/Nizam_2.jpeg" alt="Mohammed Nizam K N">
+            </div>
+        </div>
+    </section>
+
+    <!-- SELECTED PROJECTS -->
+    <section class="projects" id="projects">
+        <div class="section-title">
+            <p class="eyebrow">SELECTED WORK</p>
+            <h2>Projects I Build</h2>
+            <p>Selected game and interactive application projects demonstrating gameplay programming, UI/UX design, AI, systems development and practical software delivery.</p>
+        </div>
+
+        <div class="project-grid project-grid-main">
+            <article class="project-card">
+                <img src="assets/images/secretfour-banner.png" alt="Secret Four">
+                <div class="project-content">
+                    <h3>Secret Four</h3>
+                    <p>A strategic 2D board game with turn-based gameplay, directional mechanics and human-vs-human multiplayer networking.</p>
+                    <div class="tech">
+                        <span>Unity</span><span>C#</span><span>Multiplayer</span><span>Networking</span>
+                    </div>
+                    <div class="project-buttons">
+                        <div class="project-actions">
+                            <a href="projects/secret-four.html" class="btn secondary">Details</a>
+                            <a href="https://github.com/NIZAM77777/Secret-Four" target="_blank" rel="noopener noreferrer" class="btn secondary">GitHub</a>
+                        </div>
+                        <span class="project-status">In Development</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card">
+                <img src="assets/images/mirrorescape-banner.png" alt="Mirror Escape">
+                <div class="project-content">
+                    <h3>Mirror Escape</h3>
+                    <p>A 2D puzzle game where the player and mirrored character reach their exits through synchronized movement and special tile mechanics.</p>
+                    <div class="tech">
+                        <span>Unity</span><span>C#</span><span>Android</span><span>2D Puzzle</span>
+                    </div>
+                    <div class="project-buttons">
+                        <div class="project-actions">
+                            <a href="https://github.com/NIZAM77777/Mirror-Escape" target="_blank" rel="noopener noreferrer" class="btn secondary">GitHub</a>
+                        </div>
+                        <span class="project-status">In Development</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card">
+                <img src="assets/images/tictactoe-banner.png" alt="Tic Tac Toe">
+                <div class="project-content">
+                    <h3>Tic Tac Toe</h3>
+                    <p>A published Unity Android game with single-player AI and local multiplayer, built for responsive mobile gameplay.</p>
+                    <div class="tech">
+                        <span>Unity</span><span>C#</span><span>AI</span><span>Android</span>
+                    </div>
+                    <div class="project-buttons">
+                        <div class="project-actions">
+                            <a href="https://github.com/NIZAM77777/TicTacToe" target="_blank" rel="noopener noreferrer" class="btn secondary">GitHub</a>
+                            <a href="https://play.google.com/store/apps/details?id=com.mn7studios.tictactoe" target="_blank" rel="noopener noreferrer" class="btn secondary playstore-btn">Google Play</a>
+                        </div>
+                        <span class="project-status">Available on Google Play</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card">
+                <img src="assets/images/connectfour-banner.png" alt="Four Fusion">
+                <div class="project-content">
+                    <h3>Four Fusion</h3>
+                    <p>A strategic Connect Four-style game featuring Minimax-based AI difficulty levels and local multiplayer.</p>
+                    <div class="tech">
+                        <span>Unity</span><span>C#</span><span>Minimax AI</span><span>Android</span>
+                    </div>
+                    <div class="project-buttons">
+                        <div class="project-actions">
+                            <a href="https://github.com/NIZAM77777/Four_Fusion" target="_blank" rel="noopener noreferrer" class="btn secondary">GitHub</a>
+                            <a href="https://play.google.com/store/apps/details?id=com.mn7studio.fourfusion" target="_blank" rel="noopener noreferrer" class="btn secondary playstore-btn">Google Play</a>
+                        </div>
+                        <span class="project-status">Available on Google Play</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card ninja-fight-card">
+                <img src="assets/images/ninja-fight-banner.jpg" alt="Ninja Fight 2D action combat game artwork">
+                <div class="project-content">
+                    <h3>Ninja Fight</h3>
+                    <p>A 2D action-combat game concept set in a stylized Asian-inspired world, featuring a masked ninja hero, weapon-based encounters, platform challenges and atmospheric environments.</p>
+                    <div class="tech">
+                        <span>2D Action</span><span>Combat</span><span>Ninja</span><span>Level Design</span>
+                    </div>
+                    <div class="project-buttons">
+                        <div class="project-actions">
+                            <a href="projects/ninja-fight.html" class="btn secondary">View Project</a>
+                        </div>
+                        <span class="project-status">In Development</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card">
+                <img src="assets/images/topple-shot-banner.png" alt="Topple Shot 2.5D game artwork">
+                <div class="project-content">
+                    <h3>Topple Shot</h3>
+                    <p>A 2.5D action game project focused on dynamic shooting gameplay, spatial depth and an engaging side-view presentation.</p>
+                    <div class="tech">
+                        <span>Unity</span><span>C#</span><span>2.5D</span><span>Action</span>
+                    </div>
+                    <div class="project-buttons">
+                        <div class="project-actions">
+                            <a href="projects/topple-shot.html" class="btn secondary">View Project</a>
+                        </div>
+                        <span class="project-status">In Development</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card">
+                <img src="assets/images/one-last-gambit-banner.png" alt="One Last Gambit 3D chess game artwork">
+                <div class="project-content">
+                    <h3>One Last Gambit</h3>
+                    <p>A 3D chess game project presenting the classic strategy experience in a detailed three-dimensional environment.</p>
+                    <div class="tech">
+                        <span>Unity</span><span>C#</span><span>3D</span><span>Chess</span>
+                    </div>
+                    <div class="project-buttons">
+                        <div class="project-actions">
+                            <a href="projects/one-last-gambit.html" class="btn secondary">View Project</a>
+                        </div>
+                        <span class="project-status">In Development</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card">
+                <img src="assets/images/kiosk-project-banner.svg" alt="Interactive touchscreen kiosk installation">
+                <div class="project-content">
+                    <h3>Interactive Touchscreen Kiosk</h3>
+                    <p>Independently designed and developed an interactive touchscreen kiosk application for a UAE client's three-day event, using Electron.js and a large-format LED touchscreen display.</p>
+                    <div class="tech">
+                        <span>Electron.js</span><span>JavaScript</span><span>HTML</span><span>CSS</span><span>UI/UX</span>
+                    </div>
+                    <div class="project-buttons">
+                        <div class="project-actions" aria-hidden="true"></div>
+                        <span class="project-status">Completed &amp; Delivered</span>
+                    </div>
+                </div>
+            </article>
+        </div>   </section>
+
+    <!-- ABOUT -->
+    <section class="about" id="about">
+        <div class="section-title">
+            <p class="eyebrow">PROFILE</p>
+            <h2>About Me</h2>
+        </div>
+
+        <div class="about-layout">
+            <div class="about-content">
+                <h3>Unity developer focused on building complete game systems.</h3>
+                <p>
+                    I'm Mohammed Nizam K N, an AI Engineer, Unity Game Developer and Gameplay Programmer
+                    with a B.Tech in Computer Science & Engineering. I build games from
+                    concept through implementation, testing and deployment across platforms.
+                </p>
+                <p>
+                    My work covers gameplay programming, game architecture, AI, UI,
+                    level systems, debugging, optimization and multiplayer development.
+                    I enjoy turning gameplay ideas into reusable and maintainable systems.
+                </p>
+                <p>
+                    I also founded <strong>MN7 Studios</strong>, where I develop original
+                    Unity games and experiment with reusable tools and development workflows.
+                </p>
+            </div>
+
+            <div class="about-highlights">
+                <div class="mini-card"><strong>Unity</strong><span>Primary engine</span></div>
+                <div class="mini-card"><strong>C#</strong><span>Primary language</span></div>
+                <div class="mini-card"><strong>AI</strong><span>Game & decision systems</span></div>
+                <div class="mini-card"><strong>Multiplayer</strong><span>Online gameplay systems</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section class="skills" id="skills">
+        <div class="section-title">
+            <p class="eyebrow">TECH STACK</p>
+            <h2>Technical Skills</h2>
+            <p>Technologies and systems I use to build games and supporting tools.</p>
+        </div>
+
+        <div class="skills-grid">
+            <div class="skill-card">
+                <i class="fa-solid fa-gamepad"></i>
+                <h3>Unity & Gameplay</h3>
+                <div class="skill-tags">
+                    <span>Unity 6</span><span>2D</span><span>3D</span><span>Gameplay Programming</span>
+                    <span>Game Architecture</span><span>UI</span><span>Level Design</span>
+                    <span>Scriptable Objects</span><span>Object Pooling</span><span>Optimization</span>
+                </div>
+            </div>
+
+            <div class="skill-card">
+                <i class="fa-solid fa-brain"></i>
+                <h3>AI & Game Systems</h3>
+                <div class="skill-tags">
+                    <span>Minimax</span><span>Game State Logic</span><span>AI Systems</span>
+                    <span>Turn Systems</span><span>Reusable Systems</span><span>Coroutines</span>
+                    <span>Debugging</span>
+                </div>
+            </div>
+
+            <div class="skill-card">
+                <i class="fa-solid fa-network-wired"></i>
+                <h3>Multiplayer & Mobile</h3>
+                <div class="skill-tags">
+                    <span>Multiplayer Networking</span><span>Networked Systems</span><span>Android</span>
+                    <span>Mobile Optimization</span><span>Google Play Console</span><span>AdMob</span>
+                </div>
+            </div>
+
+            <div class="skill-card">
+                <i class="fa-solid fa-code"></i>
+                <h3>Programming & Tools</h3>
+                <div class="skill-tags">
+                    <span>C#</span><span>C++</span><span>Python</span><span>SQL</span>
+                    <span>HTML</span><span>CSS</span><span>JavaScript</span><span>Flutter</span>
+                    <span>Git</span><span>GitHub</span><span>Visual Studio</span><span>Android Studio</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="learning-strip">
+            <strong>Currently exploring:</strong>
+            Shader Graph · Advanced AI · Game Analytics · Unreal Engine · AR/VR
+        </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section class="experience" id="experience">
+        <div class="section-title">
+            <p class="eyebrow">BACKGROUND</p>
+            <h2>Experience & Education</h2>
+        </div>
+
+        <div class="timeline">
+            <article class="timeline-item">
+                <span>EDUCATION</span>
+                <h3>B.Tech — Computer Science & Engineering</h3>
+                <p>Built foundations in programming, software engineering, algorithms and game development.</p>
+            </article>
+
+            <article class="timeline-item">
+                <span>PROFESSIONAL DEVELOPMENT</span>
+                <h3>Unity Game Development</h3>
+                <p>Hands-on Unity development across gameplay programming, AI systems, UI, mobile development and collaborative game projects.</p>
+            </article>
+
+            <article class="timeline-item">
+                <span>FREELANCE · ADIPEC · ABU DHABI</span>
+                <h3>Interactive Kiosk Application Developer</h3>
+                <p>Independently designed, programmed and delivered a complete Electron.js touchscreen kiosk application for the ADIPEC event in Abu Dhabi. Handled the UI/UX design, icon design, video content, application navigation and touchscreen interaction, and tested the system on the event LED display.</p>
+                <div class="tech"><span>Electron.js</span><span>JavaScript</span><span>UI/UX Design</span><span>Touchscreen</span></div>
+            </article>
+
+            <article class="timeline-item">
+                <span>FREELANCE · UAE</span>
+                <h3>Freelance Unity Developer</h3>
+                <p>Created a reusable Unity Store System asset for a UAE client, designed to be integrated across games with configurable products, categories and store functionality.</p>
+                <div class="tech"><span>Unity</span><span>C#</span><span>Reusable Systems</span><span>Editor Workflow</span></div>
+            </article>
+
+            <article class="timeline-item">
+                <span>PRODUCT DEVELOPMENT</span>
+                <h3>MN7 Store System</h3>
+                <p>Developing the reusable store system into a Unity Asset Store product. The asset is being prepared and submitted through the Unity Asset Store publishing process.</p>
+                <div class="tech"><span>Unity</span><span>C#</span><span>Scriptable Objects</span><span>Reusable Asset</span></div>
+            </article>
+
+            <article class="timeline-item">
+                <span>INDEPENDENT DEVELOPMENT</span>
+                <h3>Founder — MN7 Studios</h3>
+                <p>Developing and publishing independent Unity games while building reusable systems and mobile game experiences.</p>
+            </article>
+        </div>
+    </section>
+
+    <!-- MN7 STUDIOS -->
+    <section class="studio" id="studio">
+        <div class="studio-inner">
+            <img src="assets/images/CompanyName.png" alt="MN7 Studios">
+            <div>
+                <p class="eyebrow">INDEPENDENT GAME DEVELOPMENT</p>
+                <h2>MN7 Studios</h2>
+                <p>
+                    An independent game-development studio focused on original Unity games,
+                    reusable development systems and mobile experiences.
+                </p>
+                <div class="studio-links">
+                    <a href="https://play.google.com/store/apps/dev?id=8452972356469482875" target="_blank" rel="noopener noreferrer" class="btn">Google Play</a>
+                    <a href="https://itch.io/profile/nizam-mn7" target="_blank" rel="noopener noreferrer" class="btn secondary">itch.io</a>
+                    <a href="https://github.com/NIZAM77777" target="_blank" rel="noopener noreferrer" class="btn secondary">GitHub</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EARLIER PROJECTS -->
+    <section class="journey" id="earlier-projects">
+        <div class="section-title">
+            <p class="eyebrow">LEARNING JOURNEY</p>
+            <h2>Learning Projects</h2>
+            <p>Projects created while building my foundation in Unity and game development.</p>
+        </div>
+
+        <div class="journey-grid">
+            <article class="journey-card">
+                <img src="assets/images/spaceshooter-banner.jpg" alt="Space Shooter">
+                <div class="journey-content">
+                    <h3>Space Shooter</h3>
+                    <p>Early Unity project covering player movement, enemy AI, shooting, collision detection, UI and gameplay power-ups.</p>
+                    <div class="tech"><span>Unity</span><span>C#</span><span>2D</span></div>
+                    <a href="https://itch.io/profile/nizam-mn7" target="_blank" rel="noopener noreferrer" class="btn">View on itch.io</a>
+                </div>
+            </article>
+
+            <article class="journey-card">
+                <img src="assets/images/brokenmukha-banner.png" alt="Broken Mukha">
+                <div class="journey-content">
+                    <h3>Broken Mukha</h3>
+                    <p>Collaborative 3D Unity project where I contributed to gameplay programming, UI, debugging and feature development.</p>
+                    <div class="tech"><span>Unity</span><span>C#</span><span>3D</span></div>
+                    <a href="https://itch.io/profile/nizam-mn7" target="_blank" rel="noopener noreferrer" class="btn">View on itch.io</a>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="contact" id="contact">
+        <div class="contact-panel">
+            <p class="eyebrow">GET IN TOUCH</p>
+            <h2>Let's build something.</h2>
+            <p>I'm open to Unity development opportunities, collaborations and game-development projects.</p>
+
+            <div class="contact-actions">
+                <a href="mailto:mohammednizamkn217@gmail.com" class="btn">Email Me</a>
+                <a href="assets/resume/Mohammed_Nizam_K_N.pdf" target="_blank" class="btn secondary">View Resume</a>
+            </div>
+
+            <div class="contact-phone">
+                <a href="tel:+971561715991" aria-label="Call Mohammed Nizam in UAE">+971 56 171 5991</a>
+                <a href="tel:+919567185432" aria-label="Call Mohammed Nizam in India">+91 95671 85432</a>
+            </div>
+
+            <div class="contact-icons">
+                <a href="mailto:mohammednizamkn217@gmail.com" aria-label="Email Mohammed Nizam"><i class="fas fa-envelope"></i></a>
+                <a href="https://github.com/NIZAM77777" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/mohammed-nizam-k-n/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="https://play.google.com/store/apps/dev?id=8452972356469482875" target="_blank" rel="noopener noreferrer" aria-label="Google Play"><i class="fab fa-google-play"></i></a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <img src="assets/images/mn7-logo.jpg" alt="MN7 Studios logo">
+    <h2>MN7 Studios</h2>
+    <p>Building games and interactive experiences with Unity.</p>
+    <nav aria-label="Footer navigation">
+        <a href="#projects">Projects</a> ·
+        <a href="#about">About</a> ·
+        <a href="#experience">Experience</a> ·
+        <a href="#contact">Contact</a> ·
+        <a href="privacy-policy.html">Privacy Policy</a> ·
+        <a href="terms.html">Terms of Use</a>
+    </nav>
+    <p>© 2026 MN7 Studios. All Rights Reserved.</p>
+</footer>
+
+<button id="topBtn" aria-label="Back to top">↑</button>
+<script src="script.js"></script>
+</body>
+</html>

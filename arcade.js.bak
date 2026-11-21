@@ -1,0 +1,546 @@
+/* ==========================================================================
+   MN7 Studios — arcade layer
+   Hero particles · cursor reticle · card tilt · achievements ·
+   "Beat my AI": Connect Four with a minimax + alpha-beta opponent,
+   the same technique used in Four Fusion.
+   Home page only. Everything degrades silently and respects reduced motion.
+   ========================================================================== */
+(function () {
+  "use strict";
+
+  var $  = function (s, c) { return (c || document).querySelector(s); };
+  var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var fine   = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+  var store = {
+    get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  };
+
+  /* ======================================================================
+     1. ACHIEVEMENTS
+     ====================================================================== */
+  var ACHIEVEMENTS = [
+    { id: "explorer",  icon: "🧭", name: "Explorer",      hint: "Scroll through every section" },
+    { id: "critic",    icon: "🖼️", name: "Art Critic",    hint: "Open a piece of project artwork" },
+    { id: "daynight",  icon: "🌓", name: "Day & Night",   hint: "Switch between light and dark" },
+    { id: "challenger",icon: "🎮", name: "Challenger",    hint: "Take on the Connect Four AI" },
+    { id: "winner",    icon: "🏆", name: "Four in a Row", hint: "Beat the AI on any difficulty" },
+    { id: "hardmode",  icon: "🧠", name: "Grandmaster",   hint: "Beat the AI on Hard" },
+    { id: "konami",    icon: "⌨️", name: "Secret Code",   hint: "Some codes never get old" }
+  ];
+
+  var unlocked = {};
+  try { unlocked = JSON.parse(store.get("mn7-achievements") || "{}") || {}; } catch (e) { unlocked = {}; }
+
+  var hud, hudCount, hudBar, panel, achToast;
+
+  function buildHud() {
+    hud = document.createElement("button");
+    hud.type = "button";
+    hud.className = "hud";
+    hud.setAttribute("aria-label", "Show achievements");
+    hud.innerHTML = '<span aria-hidden="true">🏆</span><span class="hud-count"></span>' +
+                    '<span class="hud-bar"><i></i></span>';
+    document.body.appendChild(hud);
+    hudCount = $(".hud-count", hud);
+    hudBar   = $(".hud-bar i", hud);
+
+    panel = document.createElement("div");
+    panel.className = "ach-panel";
+    panel.setAttribute("role", "dialog");
+    panel.setAttribute("aria-label", "Achievements");
+    panel.innerHTML = "<h4>ACHIEVEMENTS</h4>" + ACHIEVEMENTS.map(function (a) {
+      return '<div class="ach-row" data-ach="' + a.id + '">' +
+               '<span class="ach-ico" aria-hidden="true">' + a.icon + "</span>" +
+               '<span class="ach-txt"><strong>' + a.name + "</strong><span>" + a.hint + "</span></span>" +
+             "</div>";
+    }).join("");
+    document.body.appendChild(panel);
+
+    achToast = document.createElement("div");
+    achToast.className = "ach-toast";
+    achToast.setAttribute("role", "status");
+    achToast.setAttribute("aria-live", "polite");
+    document.body.appendChild(achToast);
+
+    hud.addEventListener("click", function (e) {
+      e.stopPropagation();
+      panel.classList.toggle("open");
+    });
+    document.addEventListener("click", function (e) {
+      if (!panel.contains(e.target) && e.target !== hud) panel.classList.remove("open");
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") panel.classList.remove("open");
+    });
+
+    setTimeout(function () { hud.classList.add("visible"); }, 1200);
+    paintHud();
+  }
+
+  function paintHud() {
+    var got = ACHIEVEMENTS.filter(function (a) { return unlocked[a.id]; }).length;
+    if (hudCount) hudCount.textContent = got + " / " + ACHIEVEMENTS.length;
+    if (hudBar) hudBar.style.width = (got / ACHIEVEMENTS.length) * 100 + "%";
+    ACHIEVEMENTS.forEach(function (a) {
+      var row = $('[data-ach="' + a.id + '"]', panel);
+      if (row) row.classList.toggle("got", !!unlocked[a.id]);
+    });
+  }
+
+  function unlock(id) {
+    if (unlocked[id]) return;
+    var a = ACHIEVEMENTS.filter(function (x) { return x.id === id; })[0];
+    if (!a) return;
+    unlocked[id] = 1;
+    store.set("mn7-achievements", JSON.stringify(unlocked));
+    paintHud();
+    if (!achToast) return;
+    achToast.innerHTML = '<span class="ico" aria-hidden="true">' + a.icon + "</span>" +
+                         "<span><b>ACHIEVEMENT UNLOCKED</b><span>" + a.name + "</span></span>";
+    achToast.classList.add("show");
+    clearTimeout(achToast._t);
+    achToast._t = setTimeout(function () { achToast.classList.remove("show"); }, 3200);
+  }
+
+  /* ======================================================================
+     2. HERO PARTICLE FIELD
+     ====================================================================== */
+  function heroParticles() {
+    var hero = $(".hero");
+    if (!hero || reduce) return;
+    var cv = document.createElement("canvas");
+    cv.id = "heroFx";
+    cv.setAttribute("aria-hidden", "true");
+    hero.insertBefore(cv, hero.firstChild);
+    var ctx = cv.getContext("2d");
+    var dots = [], raf = null, w = 0, h = 0, live = true;
+
+    function accent() {
+      return getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#00bfff";
+    }
+    function size() {
+      var r = hero.getBoundingClientRect();
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = r.width; h = r.height;
+      cv.width = w * dpr; cv.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    function seed() {
+      var n = Math.min(46, Math.round(w / 26));
+      dots = [];
+      for (var i = 0; i < n; i++) {
+        dots.push({ x: Math.random() * w, y: Math.random() * h,
+                    vx: (Math.random() - .5) * .22, vy: (Math.random() - .5) * .22,
+                    r: Math.random() * 1.7 + .7 });
+      }
+    }
+    function frame() {
+      if (!live) return;
+      ctx.clearRect(0, 0, w, h);
+      var col = accent();
+      for (var i = 0; i < dots.length; i++) {
+        var d = dots[i];
+        d.x += d.vx; d.y += d.vy;
+        if (d.x < 0 || d.x > w) d.vx *= -1;
+        if (d.y < 0 || d.y > h) d.vy *= -1;
+        for (var j = i + 1; j < dots.length; j++) {
+          var e = dots[j], dx = d.x - e.x, dy = d.y - e.y, dist = Math.hypot(dx, dy);
+          if (dist < 120) {
+            ctx.globalAlpha = (1 - dist / 120) * .16;
+            ctx.strokeStyle = col; ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(d.x, d.y); ctx.lineTo(e.x, e.y); ctx.stroke();
+          }
+        }
+        ctx.globalAlpha = .5; ctx.fillStyle = col;
+        ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      raf = requestAnimationFrame(frame);
+    }
+    function start() { if (!raf) { live = true; raf = requestAnimationFrame(frame); } }
+    function stop()  { live = false; if (raf) { cancelAnimationFrame(raf); raf = null; } }
+
+    size(); seed(); start();
+    window.addEventListener("resize", function () { size(); seed(); }, { passive: true });
+    document.addEventListener("visibilitychange", function () { document.hidden ? stop() : start(); });
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (en) {
+        en[0].isIntersecting ? start() : stop();
+      }, { threshold: 0 }).observe(hero);
+    }
+  }
+
+  /* ======================================================================
+     3. CURSOR RETICLE
+     ====================================================================== */
+  function reticle() {
+    if (!fine || reduce) return;
+    var el = document.createElement("div");
+    el.className = "reticle";
+    el.setAttribute("aria-hidden", "true");
+    document.body.appendChild(el);
+    var tx = 0, ty = 0, cx = 0, cy = 0, raf;
+
+    window.addEventListener("mousemove", function (e) {
+      tx = e.clientX; ty = e.clientY;
+      el.classList.add("on");
+      var hot = e.target.closest("a,button,.card-media,.chip,.cell,.mini-card,.hero-stats div");
+      el.classList.toggle("lock", !!hot);
+      if (!raf) raf = requestAnimationFrame(loop);
+    }, { passive: true });
+    document.addEventListener("mouseleave", function () { el.classList.remove("on"); });
+
+    function loop() {
+      cx += (tx - cx) * .22; cy += (ty - cy) * .22;
+      el.style.transform = "translate(" + cx + "px," + cy + "px) translate(-50%,-50%)";
+      raf = (Math.abs(tx - cx) > .4 || Math.abs(ty - cy) > .4) ? requestAnimationFrame(loop) : null;
+    }
+  }
+
+  /* ======================================================================
+     4. CARD TILT + GLARE
+     ====================================================================== */
+  function tilt() {
+    if (!fine || reduce) return;
+    $$(".project-card, .journey-card").forEach(function (card) {
+      if (card.classList.contains("project-card")) {
+        var g = document.createElement("span");
+        g.className = "glare";
+        g.setAttribute("aria-hidden", "true");
+        card.appendChild(g);
+      }
+      card.addEventListener("mousemove", function (e) {
+        var r = card.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width;
+        var py = (e.clientY - r.top) / r.height;
+        card.style.setProperty("--ry", ((px - .5) * 7).toFixed(2) + "deg");
+        card.style.setProperty("--rx", ((.5 - py) * 7).toFixed(2) + "deg");
+        card.style.setProperty("--mx", (px * 100).toFixed(1) + "%");
+        card.style.setProperty("--my", (py * 100).toFixed(1) + "%");
+      });
+      card.addEventListener("mouseleave", function () {
+        card.style.setProperty("--ry", "0deg");
+        card.style.setProperty("--rx", "0deg");
+      });
+    });
+  }
+
+  /* ======================================================================
+     5. CONNECT FOUR — minimax with alpha-beta pruning
+     ====================================================================== */
+  var COLS = 7, ROWS = 6, HUMAN = 1, AI = 2;
+  var LEVELS = { easy: 2, normal: 4, hard: 6 };
+
+  function emptyBoard() { return new Array(COLS * ROWS).fill(0); }
+  function at(b, c, r) { return b[r * COLS + c]; }
+  function landingRow(b, c) {
+    for (var r = ROWS - 1; r >= 0; r--) if (!at(b, c, r)) return r;
+    return -1;
+  }
+  function moves(b) {
+    var m = [], order = [3, 2, 4, 1, 5, 0, 6];
+    for (var i = 0; i < order.length; i++) if (landingRow(b, order[i]) >= 0) m.push(order[i]);
+    return m;
+  }
+  function lines() {
+    var out = [], c, r, i, L;
+    for (r = 0; r < ROWS; r++) for (c = 0; c < COLS - 3; c++) { L = []; for (i = 0; i < 4; i++) L.push([c + i, r]); out.push(L); }
+    for (c = 0; c < COLS; c++) for (r = 0; r < ROWS - 3; r++) { L = []; for (i = 0; i < 4; i++) L.push([c, r + i]); out.push(L); }
+    for (c = 0; c < COLS - 3; c++) for (r = 0; r < ROWS - 3; r++) { L = []; for (i = 0; i < 4; i++) L.push([c + i, r + i]); out.push(L); }
+    for (c = 0; c < COLS - 3; c++) for (r = 3; r < ROWS; r++) { L = []; for (i = 0; i < 4; i++) L.push([c + i, r - i]); out.push(L); }
+    return out;
+  }
+  var LINES = lines();
+
+  function winnerLine(b) {
+    for (var i = 0; i < LINES.length; i++) {
+      var L = LINES[i], v = at(b, L[0][0], L[0][1]);
+      if (!v) continue;
+      if (v === at(b, L[1][0], L[1][1]) && v === at(b, L[2][0], L[2][1]) && v === at(b, L[3][0], L[3][1]))
+        return { player: v, line: L };
+    }
+    return null;
+  }
+  function full(b) { return moves(b).length === 0; }
+
+  function score(b) {
+    var s = 0, i, k;
+    for (i = 0; i < LINES.length; i++) {
+      var L = LINES[i], me = 0, you = 0;
+      for (k = 0; k < 4; k++) {
+        var v = at(b, L[k][0], L[k][1]);
+        if (v === AI) me++; else if (v === HUMAN) you++;
+      }
+      if (me && you) continue;
+      if (me === 3) s += 60; else if (me === 2) s += 9; else if (me === 1) s += 1;
+      if (you === 3) s -= 75; else if (you === 2) s -= 11; else if (you === 1) s -= 1;
+    }
+    for (var r = 0; r < ROWS; r++) {               // centre control
+      var cv = at(b, 3, r);
+      if (cv === AI) s += 5; else if (cv === HUMAN) s -= 5;
+    }
+    return s;
+  }
+
+  function minimax(b, depth, alpha, beta, maximising) {
+    var w = winnerLine(b);
+    if (w) return w.player === AI ? 100000 + depth : -100000 - depth;
+    if (full(b)) return 0;
+    if (depth === 0) return score(b);
+
+    var list = moves(b), i, c, r, val;
+    if (maximising) {
+      var best = -Infinity;
+      for (i = 0; i < list.length; i++) {
+        c = list[i]; r = landingRow(b, c); b[r * COLS + c] = AI;
+        val = minimax(b, depth - 1, alpha, beta, false);
+        b[r * COLS + c] = 0;
+        if (val > best) best = val;
+        if (best > alpha) alpha = best;
+        if (alpha >= beta) break;
+      }
+      return best;
+    }
+    var worst = Infinity;
+    for (i = 0; i < list.length; i++) {
+      c = list[i]; r = landingRow(b, c); b[r * COLS + c] = HUMAN;
+      val = minimax(b, depth - 1, alpha, beta, true);
+      b[r * COLS + c] = 0;
+      if (val < worst) worst = val;
+      if (worst < beta) beta = worst;
+      if (alpha >= beta) break;
+    }
+    return worst;
+  }
+
+  function bestMove(b, depth) {
+    var list = moves(b), best = -Infinity, pick = list[0], i, c, r, val;
+    for (i = 0; i < list.length; i++) {
+      c = list[i]; r = landingRow(b, c); b[r * COLS + c] = AI;
+      val = minimax(b, depth - 1, -Infinity, Infinity, false);
+      b[r * COLS + c] = 0;
+      if (val > best) { best = val; pick = c; }
+    }
+    return pick;
+  }
+
+  /* ---- the modal ---- */
+  function buildArcade() {
+    var wrap = document.createElement("div");
+    wrap.className = "arcade";
+    wrap.setAttribute("role", "dialog");
+    wrap.setAttribute("aria-modal", "true");
+    wrap.setAttribute("aria-label", "Connect Four challenge");
+    wrap.innerHTML =
+      '<div class="arcade-box">' +
+        '<div class="arcade-head">' +
+          "<div><h3>Beat my AI</h3>" +
+          "<p>Connect Four against a minimax opponent with alpha-beta pruning — the same approach that drives the AI in Four Fusion. You are red and move first.</p></div>" +
+          '<button class="arcade-close" type="button" aria-label="Close the challenge">&times;</button>' +
+        "</div>" +
+        '<div class="arcade-opts" role="group" aria-label="Difficulty">' +
+          '<button class="lvl" type="button" data-lvl="easy">Easy</button>' +
+          '<button class="lvl active" type="button" data-lvl="normal">Normal</button>' +
+          '<button class="lvl" type="button" data-lvl="hard">Hard</button>' +
+        "</div>" +
+        '<div class="board my-turn" role="grid" aria-label="Connect Four board"></div>' +
+        '<p class="arcade-status" role="status" aria-live="polite"><b>Your move.</b> Pick a column.</p>' +
+        '<div class="arcade-foot">' +
+          '<button class="btn secondary" type="button" data-act="restart"><i class="fa-solid fa-rotate-left"></i> New game</button>' +
+          '<a class="btn" href="https://play.google.com/store/apps/details?id=com.mn7studio.fourfusion" target="_blank" rel="noopener noreferrer"><i class="fab fa-google-play"></i> Get Four Fusion</a>' +
+        "</div>" +
+        '<p class="arcade-note">Search depth: Easy 2 plies · Normal 4 · Hard 6. Position scoring weights open lines and centre control.</p>' +
+      "</div>";
+    document.body.appendChild(wrap);
+
+    var boardEl = $(".board", wrap);
+    var statusEl = $(".arcade-status", wrap);
+    var board = emptyBoard();
+    var level = "normal";
+    var busy = false, over = false, lastFocus = null;
+
+    var cells = [];
+    for (var r = 0; r < ROWS; r++) {
+      for (var c = 0; c < COLS; c++) {
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "cell";
+        btn.dataset.c = c; btn.dataset.r = r;
+        btn.setAttribute("aria-label", "Column " + (c + 1) + ", row " + (r + 1) + ", empty");
+        boardEl.appendChild(btn);
+        cells.push(btn);
+      }
+    }
+    function cellEl(c, r) { return cells[r * COLS + c]; }
+
+    function say(html) { statusEl.innerHTML = html; }
+
+    function paint(c, r, who, animate) {
+      var el = cellEl(c, r);
+      el.classList.add(who === AI ? "p2" : "p1");
+      if (animate && !reduce) {
+        el.classList.add("drop");
+        setTimeout(function () { el.classList.remove("drop"); }, 340);
+      }
+      el.setAttribute("aria-label", "Column " + (c + 1) + ", row " + (r + 1) + ", " +
+                      (who === AI ? "yellow" : "red"));
+    }
+
+    function finish(res) {
+      over = true;
+      boardEl.classList.remove("my-turn");
+      if (res && res.line) {
+        res.line.forEach(function (p) { cellEl(p[0], p[1]).classList.add("win"); });
+      }
+      if (!res) { say("<b>A draw.</b> The board is full — not bad against a search tree."); return; }
+      if (res.player === HUMAN) {
+        say("<b>You win.</b> Well played — that is a clean four in a row.");
+        unlock("winner");
+        if (level === "hard") unlock("hardmode");
+      } else {
+        say("<b>The AI wins.</b> Try again, or drop the difficulty a notch.");
+      }
+    }
+
+    function aiTurn() {
+      busy = true;
+      boardEl.classList.remove("my-turn");
+      say("<b>Thinking…</b> searching " + LEVELS[level] + " plies ahead.");
+      setTimeout(function () {
+        var t0 = performance.now();
+        var c = bestMove(board, LEVELS[level]);
+        var ms = Math.max(1, Math.round(performance.now() - t0));
+        var r = landingRow(board, c);
+        if (r < 0) { busy = false; return; }
+        board[r * COLS + c] = AI;
+        paint(c, r, AI, true);
+        var w = winnerLine(board);
+        if (w || full(board)) { busy = false; finish(w); return; }
+        busy = false;
+        boardEl.classList.add("my-turn");
+        say("<b>Your move.</b> The AI took " + ms + " ms to answer.");
+      }, reduce ? 10 : 260);
+    }
+
+    function play(c) {
+      if (busy || over) return;
+      var r = landingRow(board, c);
+      if (r < 0) return;
+      board[r * COLS + c] = HUMAN;
+      paint(c, r, HUMAN, true);
+      var w = winnerLine(board);
+      if (w || full(board)) { finish(w); return; }
+      aiTurn();
+    }
+
+    function reset() {
+      board = emptyBoard();
+      over = false; busy = false;
+      cells.forEach(function (el, i) {
+        el.className = "cell";
+        el.setAttribute("aria-label", "Column " + (i % COLS + 1) + ", row " + (Math.floor(i / COLS) + 1) + ", empty");
+      });
+      boardEl.classList.add("my-turn");
+      say("<b>Your move.</b> Pick a column.");
+    }
+
+    boardEl.addEventListener("click", function (e) {
+      var cell = e.target.closest(".cell");
+      if (cell) play(parseInt(cell.dataset.c, 10));
+    });
+    boardEl.addEventListener("mouseover", function (e) {
+      var cell = e.target.closest(".cell");
+      cells.forEach(function (x) { x.classList.remove("col-hot"); });
+      if (!cell || over || busy) return;
+      var c = parseInt(cell.dataset.c, 10), r = landingRow(board, c);
+      if (r >= 0) cellEl(c, r).classList.add("col-hot");
+    });
+    boardEl.addEventListener("mouseleave", function () {
+      cells.forEach(function (x) { x.classList.remove("col-hot"); });
+    });
+
+    $$(".lvl", wrap).forEach(function (b) {
+      b.addEventListener("click", function () {
+        $$(".lvl", wrap).forEach(function (x) { x.classList.remove("active"); });
+        b.classList.add("active");
+        level = b.dataset.lvl;
+        reset();
+      });
+    });
+    $('[data-act="restart"]', wrap).addEventListener("click", reset);
+
+    function close() {
+      wrap.classList.remove("open");
+      document.body.style.overflow = "";
+      if (lastFocus) lastFocus.focus();
+    }
+    $(".arcade-close", wrap).addEventListener("click", close);
+    wrap.addEventListener("click", function (e) { if (e.target === wrap) close(); });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && wrap.classList.contains("open")) close();
+    });
+
+    return {
+      open: function () {
+        lastFocus = document.activeElement;
+        wrap.classList.add("open");
+        document.body.style.overflow = "hidden";
+        $(".arcade-close", wrap).focus();
+        unlock("challenger");
+      },
+      reset: reset
+    };
+  }
+
+  /* ======================================================================
+     6. WIRE IT UP
+     ====================================================================== */
+  function init() {
+    if (!$(".hero")) return;           // home page only
+
+    buildHud();
+    heroParticles();
+    reticle();
+    tilt();
+
+    var game = buildArcade();
+    $$("[data-arcade]").forEach(function (b) {
+      b.addEventListener("click", function (e) { e.preventDefault(); game.open(); });
+    });
+
+    // achievement: theme toggle
+    $$(".theme-toggle").forEach(function (b) {
+      b.addEventListener("click", function () { unlock("daynight"); });
+    });
+    // achievement: lightbox
+    $$(".card-media").forEach(function (m) {
+      m.addEventListener("click", function () { unlock("critic"); });
+    });
+    // achievement: saw every section
+    var seen = {}, ids = $$("main section[id]").map(function (s) { return s.id; });
+    if ("IntersectionObserver" in window && ids.length) {
+      var obs = new IntersectionObserver(function (en) {
+        en.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          seen[e.target.id] = 1;
+          if (Object.keys(seen).length >= ids.length) unlock("explorer");
+        });
+      }, { threshold: 0.25 });
+      ids.forEach(function (id) { obs.observe(document.getElementById(id)); });
+    }
+    // achievement: konami
+    var code = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
+    var pos = 0;
+    document.addEventListener("keydown", function (e) {
+      var k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+      pos = (k === code[pos]) ? pos + 1 : (k === code[0] ? 1 : 0);
+      if (pos === code.length) { pos = 0; unlock("konami"); game.open(); }
+    });
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
+})();
